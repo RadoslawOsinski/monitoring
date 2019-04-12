@@ -1,0 +1,21 @@
+app:
+  name: 'montoredapp2'
+  region: 'Polska'
+  ip: 10.6.4.4
+
+management:
+  endpoints.web.exposure:
+    include: '*'
+    exclude: env,beans,jvm
+  metrics:
+    export:
+      statsd:
+        enabled: true
+        port: 8125
+        flavor: TELEGRAF
+        host: localhost
+spring:
+  application:
+    name: monitoredApp2
+server:
+  port: 8081

@@ -1,0 +1,13 @@
+app:
+  name: 'montoredapp1'
+  region: 'Polska'
+  ip: 10.6.4.3
+
+management:
+  endpoints.web.exposure:
+    include: '*'
+    exclude: env,beans,jvm
+
+spring:
+  application:
+    name: monitoredApp1

@@ -1,0 +1,78 @@
+version: '3'
+services:
+
+  # https://hub.docker.com/_/influxdb
+  influxdb:
+    build:
+      context: influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - ${INFLUXDB_VOLUME}:/var/lib/influxdb
+
+  # https://hub.docker.com/_/telegraf
+  telegraf:
+    build:
+      context: telegraf
+    ports:
+      - "8125:8125/udp"
+    volumes:
+      # Mount for telegraf configuration
+      - ./telegraf/:/etc/telegraf/
+    links:
+      - influxdb
+    depends_on:
+      - influxdb
+
+  kapacitor:
+    # Full tag list: https://hub.docker.com/r/library/kapacitor/tags/
+    build:
+      context: kapacitor
+    volumes:
+      # Mount for kapacitor data directory
+      - ${KAPACITOR_VOLUME}/data:/var/lib/kapacitor
+      # Mount for kapacitor configuration
+#      - ./kapacitor/config/:/etc/kapacitor/
+    # Kapacitor requires network access to Influxdb
+    links:
+      - influxdb
+    ports:
+      - "9092:9092"
+    environment:
+      - KAPACITOR_HOSTNAME=kapacitor
+      - KAPACITOR_INFLUXDB_0_URLS_0=http://influxdb:8086
+    depends_on:
+      - influxdb
+
+  chronograf:
+    # Full tag list: https://hub.docker.com/r/library/chronograf/tags/
+    build:
+      context: chronograf
+    ports:
+      - "8888:8888"
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+      - KAPACITOR_URL=http://kapacitor:9092
+    links:
+      - influxdb
+      - kapacitor
+    depends_on:
+      - kapacitor
+      - influxdb
+      - telegraf
+
+  monitoredapp1:
+    build:
+      context: ../..
+      dockerfile: src/docker/monitoredapp1/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - MANAGEMENT_METRICS_EXPORT_STARTSD_ENABLED=true
+      - MANAGEMENT_METRICS_EXPORT_STARTSD_PORT=8125
+      - MANAGEMENT_METRICS_EXPORT_STARTSD_FLAVOR=TELEGRAF
+      - MANAGEMENT_METRICS_EXPORT_STARTSD_HOST=telegraf
+    links:
+      - telegraf
+    depends_on:
+      - telegraf
