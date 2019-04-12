@@ -61,6 +61,25 @@ services:
       - influxdb
       - telegraf
 
+  grafana:
+    # Full tag list: https://hub.docker.com/r/grafana/grafana/
+    build:
+      context: grafana
+      args:
+        - GRAFANA_VERSION=latest
+        - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+#     Need to fix permissions after first run: chown -R 472:472 ./
+      - ${GRAFANA_VOLUME}:/var/lib/grafana
+    links:
+      - influxdb
+    depends_on:
+      - influxdb
+
   monitoredapp1:
     build:
       context: ../..
