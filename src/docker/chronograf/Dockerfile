@@ -1,1 +1,1 @@
-FROM chronograf:1.7.8-alpine
+FROM chronograf:1.7.14-alpine

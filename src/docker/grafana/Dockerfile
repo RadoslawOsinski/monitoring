@@ -1,5 +1,5 @@
-FROM grafana/grafana:6.1.2
-ARG GRAFANA_VERSION="6.1.2"
+FROM grafana/grafana:6.4.3
+ARG GRAFANA_VERSION="6.3.3"
 
 USER grafana
 

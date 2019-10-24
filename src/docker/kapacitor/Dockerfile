@@ -1,1 +1,1 @@
-FROM kapacitor:1.5.2-alpine
+FROM kapacitor:1.5.3-alpine
