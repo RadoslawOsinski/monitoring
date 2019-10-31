@@ -95,3 +95,18 @@ services:
       - telegraf
     depends_on:
       - telegraf
+
+  monitoredpostgres:
+    build:
+      context: ../..
+      dockerfile: src/docker/monitoredPostgres/Dockerfile
+    ports:
+      - "5433:5432"
+    environment:
+    - POSTGRES_DB=testDb
+    - POSTGRES_USER=admin
+    - POSTGRES_PASSWORD=admin
+    links:
+      - telegraf
+    depends_on:
+      - telegraf
