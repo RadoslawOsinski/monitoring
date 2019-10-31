@@ -12,15 +12,15 @@
 		"id": 3,
 		"cells": [
 			{
-				"i": "13a9853b-5a9a-4c64-9615-ab6ff5a2829b",
-				"x": 4,
-				"y": 4,
+				"i": "9930abad-0cef-4aa0-8ab7-de4fe0148ea3",
+				"x": 8,
+				"y": 12,
 				"w": 4,
 				"h": 4,
-				"name": "Deadlocks (clone 1)",
+				"name": "temp_files",
 				"queries": [
 					{
-						"query": "SELECT mean(\"deadlocks\") AS \"mean_deadlocks\" FROM \"telegraf\".\"autogen\".\"postgresql\" WHERE time > :dashboardTime: AND (\"db\"='postgres' OR \"db\"='testDb') GROUP BY time(:interval:), \"db\" FILL(null)",
+						"query": "SELECT mean(\"blk_write_time\") AS \"mean_blk_write_time\", mean(\"temp_files\") AS \"mean_temp_files\" FROM \"telegraf\".\"autogen\".\"postgresql\" WHERE time > :dashboardTime: AND (\"db\"='postgres' OR \"db\"='testDb') GROUP BY time(:interval:), \"db\" FILL(null)",
 						"queryConfig": {
 							"database": "telegraf",
 							"measurement": "postgresql",
@@ -29,10 +29,22 @@
 								{
 									"value": "mean",
 									"type": "func",
-									"alias": "mean_deadlocks",
+									"alias": "mean_blk_write_time",
 									"args": [
 										{
-											"value": "deadlocks",
+											"value": "blk_write_time",
+											"type": "field",
+											"alias": ""
+										}
+									]
+								},
+								{
+									"value": "mean",
+									"type": "func",
+									"alias": "mean_temp_files",
+									"args": [
+										{
+											"value": "temp_files",
 											"type": "field",
 											"alias": ""
 										}
@@ -146,7 +158,457 @@
 				"note": "",
 				"noteVisibility": "default",
 				"links": {
-					"self": "/chronograf/v1/dashboards/3/cells/13a9853b-5a9a-4c64-9615-ab6ff5a2829b"
+					"self": "/chronograf/v1/dashboards/3/cells/9930abad-0cef-4aa0-8ab7-de4fe0148ea3"
+				}
+			},
+			{
+				"i": "7e370895-28f6-408f-8ab6-274ac858a308",
+				"x": 8,
+				"y": 8,
+				"w": 4,
+				"h": 4,
+				"name": "temp_bytes",
+				"queries": [
+					{
+						"query": "SELECT mean(\"blk_write_time\") AS \"mean_blk_write_time\", mean(\"temp_bytes\") AS \"mean_temp_bytes\" FROM \"telegraf\".\"autogen\".\"postgresql\" WHERE time > :dashboardTime: AND (\"db\"='postgres' OR \"db\"='testDb') GROUP BY time(:interval:), \"db\" FILL(null)",
+						"queryConfig": {
+							"database": "telegraf",
+							"measurement": "postgresql",
+							"retentionPolicy": "autogen",
+							"fields": [
+								{
+									"value": "mean",
+									"type": "func",
+									"alias": "mean_blk_write_time",
+									"args": [
+										{
+											"value": "blk_write_time",
+											"type": "field",
+											"alias": ""
+										}
+									]
+								},
+								{
+									"value": "mean",
+									"type": "func",
+									"alias": "mean_temp_bytes",
+									"args": [
+										{
+											"value": "temp_bytes",
+											"type": "field",
+											"alias": ""
+										}
+									]
+								}
+							],
+							"tags": {
+								"db": [
+									"postgres",
+									"testDb"
+								]
+							},
+							"groupBy": {
+								"time": "auto",
+								"tags": [
+									"db"
+								]
+							},
+							"areTagsAccepted": true,
+							"fill": "null",
+							"rawText": null,
+							"range": null,
+							"shifts": null
+						},
+						"source": "",
+						"type": "influxql"
+					}
+				],
+				"axes": {
+					"x": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y2": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					}
+				},
+				"type": "line",
+				"colors": [
+					{
+						"id": "e1ed0c60-6cb7-44c3-866b-441303df5e14",
+						"type": "scale",
+						"hex": "#31C0F6",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					},
+					{
+						"id": "22df0b9d-08b2-4cbb-930b-3d1fbe8311a3",
+						"type": "scale",
+						"hex": "#A500A5",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					},
+					{
+						"id": "0930ee2c-85bb-4c77-851b-cb44192474a7",
+						"type": "scale",
+						"hex": "#FF7E27",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					}
+				],
+				"legend": {},
+				"tableOptions": {
+					"verticalTimeAxis": true,
+					"sortBy": {
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					},
+					"wrapping": "truncate",
+					"fixFirstColumn": true
+				},
+				"fieldOptions": [
+					{
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					}
+				],
+				"timeFormat": "MM/DD/YYYY HH:mm:ss",
+				"decimalPlaces": {
+					"isEnforced": true,
+					"digits": 2
+				},
+				"note": "",
+				"noteVisibility": "default",
+				"links": {
+					"self": "/chronograf/v1/dashboards/3/cells/7e370895-28f6-408f-8ab6-274ac858a308"
+				}
+			},
+			{
+				"i": "3d9da484-f152-493b-931f-b5333183eed2",
+				"x": 4,
+				"y": 12,
+				"w": 4,
+				"h": 4,
+				"name": "blk_write_time",
+				"queries": [
+					{
+						"query": "SELECT mean(\"xact_rollback\") AS \"mean_xact_rollback\", mean(\"blk_write_time\") AS \"mean_blk_write_time\" FROM \"telegraf\".\"autogen\".\"postgresql\" WHERE time > :dashboardTime: AND (\"db\"='postgres' OR \"db\"='testDb') GROUP BY time(:interval:), \"db\" FILL(null)",
+						"queryConfig": {
+							"database": "telegraf",
+							"measurement": "postgresql",
+							"retentionPolicy": "autogen",
+							"fields": [
+								{
+									"value": "mean",
+									"type": "func",
+									"alias": "mean_xact_rollback",
+									"args": [
+										{
+											"value": "xact_rollback",
+											"type": "field",
+											"alias": ""
+										}
+									]
+								},
+								{
+									"value": "mean",
+									"type": "func",
+									"alias": "mean_blk_write_time",
+									"args": [
+										{
+											"value": "blk_write_time",
+											"type": "field",
+											"alias": ""
+										}
+									]
+								}
+							],
+							"tags": {
+								"db": [
+									"postgres",
+									"testDb"
+								]
+							},
+							"groupBy": {
+								"time": "auto",
+								"tags": [
+									"db"
+								]
+							},
+							"areTagsAccepted": true,
+							"fill": "null",
+							"rawText": null,
+							"range": null,
+							"shifts": null
+						},
+						"source": "",
+						"type": "influxql"
+					}
+				],
+				"axes": {
+					"x": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y2": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					}
+				},
+				"type": "line",
+				"colors": [
+					{
+						"id": "e1ed0c60-6cb7-44c3-866b-441303df5e14",
+						"type": "scale",
+						"hex": "#31C0F6",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					},
+					{
+						"id": "22df0b9d-08b2-4cbb-930b-3d1fbe8311a3",
+						"type": "scale",
+						"hex": "#A500A5",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					},
+					{
+						"id": "0930ee2c-85bb-4c77-851b-cb44192474a7",
+						"type": "scale",
+						"hex": "#FF7E27",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					}
+				],
+				"legend": {},
+				"tableOptions": {
+					"verticalTimeAxis": true,
+					"sortBy": {
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					},
+					"wrapping": "truncate",
+					"fixFirstColumn": true
+				},
+				"fieldOptions": [
+					{
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					}
+				],
+				"timeFormat": "MM/DD/YYYY HH:mm:ss",
+				"decimalPlaces": {
+					"isEnforced": true,
+					"digits": 2
+				},
+				"note": "",
+				"noteVisibility": "default",
+				"links": {
+					"self": "/chronograf/v1/dashboards/3/cells/3d9da484-f152-493b-931f-b5333183eed2"
+				}
+			},
+			{
+				"i": "f480bd95-a24b-4b96-a781-f498466a7379",
+				"x": 0,
+				"y": 12,
+				"w": 4,
+				"h": 4,
+				"name": "blk_read_time",
+				"queries": [
+					{
+						"query": "SELECT mean(\"xact_rollback\") AS \"mean_xact_rollback\", mean(\"blk_read_time\") AS \"mean_blk_read_time\" FROM \"telegraf\".\"autogen\".\"postgresql\" WHERE time > :dashboardTime: AND (\"db\"='postgres' OR \"db\"='testDb') GROUP BY time(:interval:), \"db\" FILL(null)",
+						"queryConfig": {
+							"database": "telegraf",
+							"measurement": "postgresql",
+							"retentionPolicy": "autogen",
+							"fields": [
+								{
+									"value": "mean",
+									"type": "func",
+									"alias": "mean_xact_rollback",
+									"args": [
+										{
+											"value": "xact_rollback",
+											"type": "field",
+											"alias": ""
+										}
+									]
+								},
+								{
+									"value": "mean",
+									"type": "func",
+									"alias": "mean_blk_read_time",
+									"args": [
+										{
+											"value": "blk_read_time",
+											"type": "field",
+											"alias": ""
+										}
+									]
+								}
+							],
+							"tags": {
+								"db": [
+									"postgres",
+									"testDb"
+								]
+							},
+							"groupBy": {
+								"time": "auto",
+								"tags": [
+									"db"
+								]
+							},
+							"areTagsAccepted": true,
+							"fill": "null",
+							"rawText": null,
+							"range": null,
+							"shifts": null
+						},
+						"source": "",
+						"type": "influxql"
+					}
+				],
+				"axes": {
+					"x": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					},
+					"y2": {
+						"bounds": [
+							"",
+							""
+						],
+						"label": "",
+						"prefix": "",
+						"suffix": "",
+						"base": "10",
+						"scale": "linear"
+					}
+				},
+				"type": "line",
+				"colors": [
+					{
+						"id": "e1ed0c60-6cb7-44c3-866b-441303df5e14",
+						"type": "scale",
+						"hex": "#31C0F6",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					},
+					{
+						"id": "22df0b9d-08b2-4cbb-930b-3d1fbe8311a3",
+						"type": "scale",
+						"hex": "#A500A5",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					},
+					{
+						"id": "0930ee2c-85bb-4c77-851b-cb44192474a7",
+						"type": "scale",
+						"hex": "#FF7E27",
+						"name": "Nineteen Eighty Four",
+						"value": "0"
+					}
+				],
+				"legend": {},
+				"tableOptions": {
+					"verticalTimeAxis": true,
+					"sortBy": {
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					},
+					"wrapping": "truncate",
+					"fixFirstColumn": true
+				},
+				"fieldOptions": [
+					{
+						"internalName": "time",
+						"displayName": "",
+						"visible": true
+					}
+				],
+				"timeFormat": "MM/DD/YYYY HH:mm:ss",
+				"decimalPlaces": {
+					"isEnforced": true,
+					"digits": 2
+				},
+				"note": "",
+				"noteVisibility": "default",
+				"links": {
+					"self": "/chronograf/v1/dashboards/3/cells/f480bd95-a24b-4b96-a781-f498466a7379"
 				}
 			},
 			{
@@ -289,8 +751,8 @@
 			},
 			{
 				"i": "eefcc96e-3500-44f9-8c52-8da0747a2ab9",
-				"x": 0,
-				"y": 8,
+				"x": 4,
+				"y": 4,
 				"w": 4,
 				"h": 4,
 				"name": "Conflicts",
@@ -979,7 +1441,7 @@
 			},
 			{
 				"i": "1d6c5c87-fd3d-4a3d-a0ef-23f5cf9fedff",
-				"x": 4,
+				"x": 0,
 				"y": 8,
 				"w": 4,
 				"h": 4,
@@ -1117,7 +1579,7 @@
 			},
 			{
 				"i": "b8a4e8ea-872f-44a5-a9b4-e05ed268697a",
-				"x": 8,
+				"x": 4,
 				"y": 8,
 				"w": 4,
 				"h": 4,
