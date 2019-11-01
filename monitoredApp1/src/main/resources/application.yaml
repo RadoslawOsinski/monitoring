@@ -8,6 +8,19 @@ management:
     include: '*'
     exclude: env,beans,jvm
 
+  metrics:
+    tags:
+      appName: 'monitoredApp1'
+
+  application:
+    name: 'monitoredApp1'
+
+management.metrics.export.statsd:
+  enabled: 'true'
+  flavor: 'telegraf'
+  host: 'telegraf'
+  port: 8125
+
 spring:
   application:
-    name: monitoredApp1
+    name: 'monitoredApp1'
