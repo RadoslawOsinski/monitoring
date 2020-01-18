@@ -31,3 +31,13 @@ spring:
       maximum-pool-size: 10
   flyway:
     enabled: true
+
+  zipkin:
+    service:
+      name: ${spring.application.name}
+    enabled: true
+    discoveryClientEnabled: false
+    sender.type: web
+  sleuth:
+    sampler:
+      probability: '0.1'

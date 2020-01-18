@@ -95,14 +95,18 @@ services:
       - MANAGEMENT_METRICS_EXPORT_STARTSD_PORT=8125
       - MANAGEMENT_METRICS_EXPORT_STARTSD_FLAVOR=TELEGRAF
       - MANAGEMENT_METRICS_EXPORT_STARTSD_HOST=telegraf
+      - SPRING_ZIPKIN_BASEURL=http://zipkin:9411/
+      - SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0
     links:
       - telegraf
       - monitoredpostgres
       - monitoredapp2
+      - zipkin
     depends_on:
       - telegraf
       - monitoredpostgres
       - monitoredapp2
+      - zipkin
 
   monitoredapp2:
     build:
@@ -115,10 +119,14 @@ services:
       - MANAGEMENT_METRICS_EXPORT_STARTSD_PORT=8125
       - MANAGEMENT_METRICS_EXPORT_STARTSD_FLAVOR=TELEGRAF
       - MANAGEMENT_METRICS_EXPORT_STARTSD_HOST=telegraf
+      - SPRING_ZIPKIN_BASEURL=http://zipkin:9411/
+      - SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0
     links:
       - telegraf
+      - zipkin
     depends_on:
       - telegraf
+      - zipkin
 
   monitoredpostgres:
     build:
@@ -134,3 +142,10 @@ services:
       - telegraf
     depends_on:
       - telegraf
+
+  zipkin:
+    build:
+      context: ../..
+      dockerfile: src/docker/zipkin/Dockerfile
+    ports:
+      - "9411:9411"

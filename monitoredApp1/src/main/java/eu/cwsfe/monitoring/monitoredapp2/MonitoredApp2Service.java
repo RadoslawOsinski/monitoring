@@ -14,8 +14,8 @@ public class MonitoredApp2Service {
     private final RestTemplate restTemplate;
     private final String monitoredApp2Address;
 
-    public MonitoredApp2Service(Environment environment) {
-        this.restTemplate = new RestTemplate();
+    public MonitoredApp2Service(Environment environment, RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
         this.monitoredApp2Address = environment.getRequiredProperty("pl.cwsfe.monitoredApp2.url");
     }
 

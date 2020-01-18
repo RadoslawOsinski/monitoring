@@ -23,5 +23,15 @@ management.metrics.export.statsd:
 spring:
   application:
     name: 'monitoredApp2'
+  zipkin:
+    service:
+      name: ${spring.application.name}
+    enabled: true
+    discoveryClientEnabled: false
+    sender.type: web
+  sleuth:
+    sampler:
+      probability: '0.1'
+
 server:
   port: 8081

@@ -29,6 +29,7 @@ public class HelloController {
     @Timed(value = "helloController.hello1")
     @GetMapping("/hello1")
     public String hello1 () {
+        LOGGER.info("hello2 invoked");
         History history = new History(UUID.randomUUID().toString().substring(0, 30), UUID.randomUUID().toString());
         historyRepository.add(history);
         String response = monitoredApp2Service.getMonitoredApp2Response();
@@ -42,6 +43,7 @@ public class HelloController {
     @Timed(value = "helloController.root")
     @GetMapping("/")
     public String root () {
+        LOGGER.info("root invoked");
         return "root app 1";
     }
 
