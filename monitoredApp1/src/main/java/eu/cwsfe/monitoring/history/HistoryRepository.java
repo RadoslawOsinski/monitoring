@@ -19,4 +19,8 @@ public class HistoryRepository {
         jdbcTemplate.update("insert into history(id, code, description) values (nextval('history_id_seq'), ?, ?)", params);
     }
 
+    public void executeDatabaseError() {
+        jdbcTemplate.update("intentional bad query");
+    }
+
 }
