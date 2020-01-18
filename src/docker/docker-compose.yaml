@@ -87,21 +87,29 @@ services:
     ports:
       - "8080:8080"
     environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://monitoredpostgres:5432/testDb
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - SPRING_DATASOURCE_USERNAME=admin
+      - PL_CWSFE_MONITOREDAPP2_URL=http://monitoredapp2:8081
       - MANAGEMENT_METRICS_EXPORT_STARTSD_ENABLED=true
       - MANAGEMENT_METRICS_EXPORT_STARTSD_PORT=8125
       - MANAGEMENT_METRICS_EXPORT_STARTSD_FLAVOR=TELEGRAF
       - MANAGEMENT_METRICS_EXPORT_STARTSD_HOST=telegraf
     links:
       - telegraf
+      - monitoredpostgres
+      - monitoredapp2
     depends_on:
       - telegraf
+      - monitoredpostgres
+      - monitoredapp2
 
   monitoredapp2:
     build:
       context: ../..
       dockerfile: src/docker/monitoredapp2/Dockerfile
     ports:
-      - "8081:8080"
+      - "8081:8081"
     environment:
       - MANAGEMENT_METRICS_EXPORT_STARTSD_ENABLED=true
       - MANAGEMENT_METRICS_EXPORT_STARTSD_PORT=8125

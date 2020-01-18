@@ -10,10 +10,10 @@ public class HelloController {
     /**
      * https://micrometer.io/docs/concepts
      */
-    @Timed(value = "helloController.hello1")
-    @GetMapping("/hello1")
+    @Timed(value = "helloController.hello2")
+    @GetMapping("/hello2")
     public String hello1 () {
-        return "hello 1 test app 2";
+        return "hello 2 test app 2";
     }
 
     /**

@@ -23,3 +23,11 @@ management.metrics.export.statsd:
 spring:
   application:
     name: 'monitoredApp1'
+  datasource:
+    type: 'com.zaxxer.hikari.HikariDataSource'
+    hikari:
+      pool-name: '${spring.application.name}-pool'
+      minimum-idle: 3
+      maximum-pool-size: 10
+  flyway:
+    enabled: true
