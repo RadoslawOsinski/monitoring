@@ -91,6 +91,11 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://monitoredpostgres:5432/testDb
       - SPRING_DATASOURCE_PASSWORD=admin
       - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_HOST=monitoredrabbitmq1
+      - SPRING_RABBITMQ_VIRTUALHOST=testVHost
+      - SPRING_RABBITMQ_USERNAME=testRabbitUser
+      - SPRING_RABBITMQ_PASSWORD=testRabbitPassword
       - PL_CWSFE_MONITOREDAPP2_URL=http://monitoredapp2:8081
       - MANAGEMENT_METRICS_EXPORT_STARTSD_ENABLED=true
       - MANAGEMENT_METRICS_EXPORT_STARTSD_PORT=8125
@@ -107,6 +112,7 @@ services:
       - telegraf
       - monitoredpostgres
       - monitoredapp2
+      - monitoredrabbitmq1
       - zipkin
 
   monitoredapp2:
@@ -120,12 +126,18 @@ services:
       - MANAGEMENT_METRICS_EXPORT_STARTSD_PORT=8125
       - MANAGEMENT_METRICS_EXPORT_STARTSD_FLAVOR=TELEGRAF
       - MANAGEMENT_METRICS_EXPORT_STARTSD_HOST=telegraf
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_HOST=monitoredrabbitmq1
+      - SPRING_RABBITMQ_VIRTUALHOST=testVHost
+      - SPRING_RABBITMQ_USERNAME=testRabbitUser
+      - SPRING_RABBITMQ_PASSWORD=testRabbitPassword
       - SPRING_ZIPKIN_BASEURL=http://zipkin:9411/
       - SPRING_SLEUTH_SAMPLER_PROBABILITY=1.0
     links:
       - telegraf
       - zipkin
     depends_on:
+      - monitoredrabbitmq1
       - telegraf
       - zipkin
 
@@ -143,6 +155,21 @@ services:
       - telegraf
     depends_on:
       - telegraf
+
+  monitoredrabbitmq1:
+    build:
+      context: ../..
+      dockerfile: src/docker/rabbitmq/Dockerfile
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+    - RABBITMQ_NODENAME=monitoredrabbitmq1
+    - RABBITMQ_DEFAULT_USER=testRabbitUser
+    - RABBITMQ_DEFAULT_PASS=testRabbitPassword
+    - RABBITMQ_DEFAULT_VHOST=testVHost
+    volumes:
+      - ${RABBITMQ_VOLUME}:/var/lib/rabbitmq/mnesia/
 
   zipkin:
     build:

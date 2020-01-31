@@ -3,6 +3,7 @@ package eu.cwsfe.monitoring;
 import eu.cwsfe.monitoring.history.History;
 import eu.cwsfe.monitoring.history.HistoryRepository;
 import eu.cwsfe.monitoring.monitoredapp2.MonitoredApp2Service;
+import eu.cwsfe.monitoring.rabbit.RabbitService;
 import eu.cwsfe.monitoring.zipkin.CustomSpanService;
 import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
@@ -20,14 +21,16 @@ public class HelloController {
     private final HistoryRepository historyRepository;
     private final MonitoredApp2Service monitoredApp2Service;
     private final CustomSpanService customSpanService;
+    private final RabbitService rabbitService;
 
     public HelloController(
             HistoryRepository historyRepository, MonitoredApp2Service monitoredApp2Service,
-            CustomSpanService customSpanService
-    ) {
+            CustomSpanService customSpanService,
+            RabbitService rabbitService) {
         this.historyRepository = historyRepository;
         this.monitoredApp2Service = monitoredApp2Service;
         this.customSpanService = customSpanService;
+        this.rabbitService = rabbitService;
     }
 
     /**
@@ -61,6 +64,14 @@ public class HelloController {
         LOGGER.info("Response from second app: {}", response);
         historyRepository.executeDatabaseError();
         return "helloException";
+    }
+
+    @Timed(value = "helloController.helloRabbit")
+    @GetMapping("/helloRabbit")
+    public String helloRabbit() {
+        LOGGER.info("helloRabbit invoked");
+        rabbitService.sendSomeMessage("Some random string: " + UUID.randomUUID().toString());
+        return "helloRabbit";
     }
 
     /**
